@@ -24,7 +24,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
                 .requestMatchers("/notices", "/contact", "/error").permitAll());
-//        http.formLogin(flc -> flc.disable());
+//      http.formLogin(flc -> flc.disable());
 		http.formLogin(withDefaults());
 //		http.formLogin(hbc -> hbc.disable());
 		http.httpBasic(withDefaults());
