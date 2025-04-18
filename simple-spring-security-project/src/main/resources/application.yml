@@ -2,12 +2,21 @@ spring:
   application:
     name: ${SPRING_APP_NAME:simple-spring-security-project}
 
+  datasource:
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3307}/${DATABASE_NAME:demo-spring-sec}
+    username: ${DATABASE_USERNAME:user}
+    password: ${DATABASE_PASSWORD:root}
+
+  jpa:
+    show-sql: ${JPA_SHOW_SQL:true}
+    properties:
+      hibernate:
+        format_sql: ${HIBERNATE_FORMAT_SQL:true}
+
 logging:
   pattern:
     console: ${LOG_PATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %cyan(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}
   level:
     org:
-     springframework:
-       security: ${SPRING_SECURITY_LOG_LEVEL:TRACE}
-    
-
+      springframework:
+        security: ${SPRING_SECURITY_LOG_LEVEL:TRACE}
