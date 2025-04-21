@@ -1,12 +1,10 @@
 spring:
+  config:
+    activate:
+      on-profile: prod
+
   application:
     name: ${SPRING_APP_NAME:simple-spring-security-project}
-
-  config:
-    import: application-prod.yml
-
-  profiles:
-    active: default
 
   datasource:
     url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3307}/${DATABASE_NAME:demo-spring-sec}
@@ -14,10 +12,10 @@ spring:
     password: ${DATABASE_PASSWORD:root}
 
   jpa:
-    show-sql: ${JPA_SHOW_SQL:true}
+    show-sql: ${JPA_SHOW_SQL:false}
     properties:
       hibernate:
-        format_sql: ${HIBERNATE_FORMAT_SQL:true}
+        format_sql: ${HIBERNATE_FORMAT_SQL:false}
 
 logging:
   pattern:
@@ -25,4 +23,4 @@ logging:
   level:
     org:
       springframework:
-        security: ${SPRING_SECURITY_LOG_LEVEL:TRACE}
+        security: ${SPRING_SECURITY_LOG_LEVEL:ERROR}
