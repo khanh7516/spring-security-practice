@@ -17,35 +17,26 @@ import com.khanhngo.simplespringsecurityproject.exception.CustomAccessDeniedHand
 import com.khanhngo.simplespringsecurityproject.exception.CustomAuthenticationEntryPoint;
 
 @Configuration
-@Profile("!prod")
-public class SecurityConfig {
-	@Bean
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        /*http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll());*/
-        /*http.authorizeHttpRequests((requests) -> requests.anyRequest().denyAll());*/
-		http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession"))
-		        .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) //Only http
-		        .csrf(csrfConfig -> csrfConfig.disable())
+@Profile("prod")
+public class SecurityProdConfig {
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession"))
+                .requiresChannel(rcc -> rcc.anyRequest().requiresSecure()) //Only https
+                .csrf(csrfConfig -> csrfConfig.disable())
                 .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
-                .requestMatchers("/notices", "/contact", "/error").permitAll());
-//      http.formLogin(flc -> flc.disable());
-		http.formLogin(withDefaults());
-//		http.formLogin(hbc -> hbc.disable());
+                .requestMatchers("/notices", "/contact", "/error", "/register").permitAll());
+        http.formLogin(withDefaults());
         http.httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
         http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler()));
-		return http.build();
-	}
-
-//    @Bean
-//    UserDetailsService userDetailsService(DataSource dataSource) {
-//		return new JdbcUserDetailsManager(dataSource);
-//	}
+        return http.build();
+    }
 
     @Bean
     PasswordEncoder passwordEncoder() {
-		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 
     /**
      * From Spring Security 6.3 version
